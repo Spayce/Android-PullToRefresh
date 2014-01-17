@@ -377,4 +377,18 @@ public abstract class LoadingLayout extends BaseLoadingLayout {
 		}
 	}
 
+    protected abstract int getDefaultDrawableResId();
+
+    protected abstract void onLoadingDrawableSet(Drawable imageDrawable);
+
+    protected abstract void onPullImpl(float scaleOfLayout);
+
+    protected abstract void pullToRefreshImpl();
+
+    protected abstract void refreshingImpl();
+
+    protected abstract void releaseToRefreshImpl();
+
+    protected abstract void resetImpl();
+
 }

@@ -581,7 +581,6 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
 	protected BaseLoadingLayout createLoadingLayout(Context context, Mode mode, TypedArray attrs) {
         BaseLoadingLayout layout = null;
-
         layout = mLoadingAnimationStyle.createLoadingLayout(context, mode,
                     getPullToRefreshScrollDirection(), attrs);
 		layout.setVisibility(View.INVISIBLE);
@@ -1295,10 +1294,15 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		 * This is the old default, and what is commonly used on iOS. Uses an
 		 * arrow image which flips depending on where the user has scrolled.
 		 */
-		FLIP;
+		FLIP,
+
+        /**
+         * Spayce-specific
+         */
+        ROCKETSHIP;
 
 		static AnimationStyle getDefault() {
-			return ROTATE;
+			return ROCKETSHIP;
 		}
 
 		/**
@@ -1312,21 +1316,25 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		static AnimationStyle mapIntToValue(int modeInt) {
 			switch (modeInt) {
 				case 0x0:
-				default:
-					return ROTATE;
+                    return ROTATE;
 				case 0x1:
-					return FLIP;
-			}
+                    return FLIP;
+                case 0x3:
+                default:
+                    return ROCKETSHIP;
+            }
 		}
 
-		LoadingLayout createLoadingLayout(Context context, Mode mode, Orientation scrollDirection, TypedArray attrs) {
+		BaseLoadingLayout createLoadingLayout(Context context, Mode mode, Orientation scrollDirection, TypedArray attrs) {
 			switch (this) {
 				case ROTATE:
-				default:
 					return new RotateLoadingLayout(context, mode, scrollDirection, attrs);
-				case FLIP:
-					return new FlipLoadingLayout(context, mode, scrollDirection, attrs);
-			}
+                case FLIP:
+                    return new FlipLoadingLayout(context, mode, scrollDirection, attrs);
+                case ROCKETSHIP:
+                default:
+                    return new RocketshipLoadingLayout(context, mode, scrollDirection, attrs);
+            }
 		}
 	}
 

@@ -1,27 +1,44 @@
 package com.handmark.pulltorefresh.library.internal;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.R;
 
 public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
-    public RocketshipLoadingLayout(final Context context) {
+    private static final String TAG = "RocketshipLoadingLayout";
+
+    protected final PullToRefreshBase.Mode mMode;
+    protected final PullToRefreshBase.Orientation mScrollDirection;
+
+    private FrameLayout mInnerLayout;
+
+    public RocketshipLoadingLayout(final Context context, final PullToRefreshBase.Mode mode, final PullToRefreshBase.Orientation scrollDirection, TypedArray attrs) {
         super(context);
-    }
+        mMode = mode;
+        mScrollDirection = scrollDirection;
 
-    public RocketshipLoadingLayout(final Context context, final AttributeSet attrs) {
-        super(context, attrs);
-    }
+        LayoutInflater.from(context).inflate(R.layout.pull_to_refresh_header_rocketship, this);
 
-    public RocketshipLoadingLayout(final Context context, final AttributeSet attrs, final int defStyle) {
-        super(context, attrs, defStyle);
+        mInnerLayout = (FrameLayout) findViewById(R.id.fl_inner);
     }
 
     @Override
     public int getContentSize() {
-        return 0;
+        switch (mScrollDirection) {
+            case HORIZONTAL:
+                return mInnerLayout.getWidth();
+            case VERTICAL:
+            default:
+                return mInnerLayout.getHeight();
+        }
     }
 
     @Override
@@ -46,12 +63,16 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     @Override
     public void setWidth(final int width) {
-
+        ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) getLayoutParams();
+        lp.width = width;
+        requestLayout();
     }
 
     @Override
     public void setHeight(final int height) {
-
+        ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) getLayoutParams();
+        lp.height = height;
+        requestLayout();
     }
 
     @Override
@@ -69,33 +90,32 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     }
 
+
+    /* ************************
+     *         UNUSED
+     * ************************/
+
     @Override
     public void setLastUpdatedLabel(final CharSequence label) {
-
     }
 
     @Override
     public void setLoadingDrawable(final Drawable drawable) {
-
     }
 
     @Override
     public void setPullLabel(final CharSequence pullLabel) {
-
     }
 
     @Override
     public void setRefreshingLabel(final CharSequence refreshingLabel) {
-
     }
 
     @Override
     public void setReleaseLabel(final CharSequence releaseLabel) {
-
     }
 
     @Override
     public void setTextTypeface(final Typeface tf) {
-
     }
 }

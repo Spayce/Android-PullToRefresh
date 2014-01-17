@@ -41,7 +41,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Orientation;
 import com.handmark.pulltorefresh.library.R;
 
 @SuppressLint("ViewConstructor")
-public abstract class LoadingLayout extends FrameLayout implements ILoadingLayout {
+public abstract class LoadingLayout extends BaseLoadingLayout {
 
 	static final String LOG_TAG = "PullToRefresh-LoadingLayout";
 
@@ -330,19 +330,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 	 * Callbacks for derivative Layouts
 	 */
 
-	protected abstract int getDefaultDrawableResId();
-
-	protected abstract void onLoadingDrawableSet(Drawable imageDrawable);
-
-	protected abstract void onPullImpl(float scaleOfLayout);
-
-	protected abstract void pullToRefreshImpl();
-
-	protected abstract void refreshingImpl();
-
-	protected abstract void releaseToRefreshImpl();
-
-	protected abstract void resetImpl();
 
 	private void setSubHeaderText(CharSequence label) {
 		if (null != mSubHeaderText) {

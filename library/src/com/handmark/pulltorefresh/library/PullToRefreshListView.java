@@ -29,13 +29,13 @@ import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.handmark.pulltorefresh.library.internal.BaseLoadingLayout;
 import com.handmark.pulltorefresh.library.internal.EmptyViewMethodAccessor;
-import com.handmark.pulltorefresh.library.internal.LoadingLayout;
 
 public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView> {
 
-	private LoadingLayout mHeaderLoadingView;
-	private LoadingLayout mFooterLoadingView;
+	private BaseLoadingLayout mHeaderLoadingView;
+	private BaseLoadingLayout mFooterLoadingView;
 
 	private FrameLayout mLvFooterLoadingFrame;
 
@@ -76,7 +76,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 
 		super.onRefreshing(false);
 
-		final LoadingLayout origLoadingView, listViewLoadingView, oppositeListViewLoadingView;
+		final BaseLoadingLayout origLoadingView, listViewLoadingView, oppositeListViewLoadingView;
 		final int selection, scrollToY;
 
 		switch (getCurrentMode()) {
@@ -136,7 +136,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 			return;
 		}
 
-		final LoadingLayout originalLoadingLayout, listViewLoadingLayout;
+		final BaseLoadingLayout originalLoadingLayout, listViewLoadingLayout;
 		final int scrollToHeight, selection;
 		final boolean scrollLvToEdge;
 
@@ -234,7 +234,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 			// Create Loading Views ready for use later
 			FrameLayout frame = new FrameLayout(getContext());
 			mHeaderLoadingView = createLoadingLayout(getContext(), Mode.PULL_FROM_START, a);
-			mHeaderLoadingView.setVisibility(View.GONE);
+            mHeaderLoadingView.setVisibility(View.GONE);
 			frame.addView(mHeaderLoadingView, lp);
 			mRefreshableView.addHeaderView(frame, null, false);
 

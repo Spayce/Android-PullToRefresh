@@ -34,11 +34,7 @@ import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.handmark.pulltorefresh.library.internal.FlipLoadingLayout;
-import com.handmark.pulltorefresh.library.internal.LoadingLayout;
-import com.handmark.pulltorefresh.library.internal.RotateLoadingLayout;
-import com.handmark.pulltorefresh.library.internal.Utils;
-import com.handmark.pulltorefresh.library.internal.ViewCompat;
+import com.handmark.pulltorefresh.library.internal.*;
 
 public abstract class PullToRefreshBase<T extends View> extends LinearLayout implements IPullToRefresh<T> {
 
@@ -90,8 +86,8 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	private Interpolator mScrollAnimationInterpolator;
 	private AnimationStyle mLoadingAnimationStyle = AnimationStyle.getDefault();
 
-	private LoadingLayout mHeaderLayout;
-	private LoadingLayout mFooterLayout;
+	private BaseLoadingLayout mHeaderLayout;
+	private BaseLoadingLayout mFooterLayout;
 
 	private OnRefreshListener<T> mOnRefreshListener;
 	private OnRefreshListener2<T> mOnRefreshListener2;
@@ -583,9 +579,11 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		super.addView(child, -1, params);
 	}
 
-	protected LoadingLayout createLoadingLayout(Context context, Mode mode, TypedArray attrs) {
-		LoadingLayout layout = mLoadingAnimationStyle.createLoadingLayout(context, mode,
-				getPullToRefreshScrollDirection(), attrs);
+	protected BaseLoadingLayout createLoadingLayout(Context context, Mode mode, TypedArray attrs) {
+        BaseLoadingLayout layout = null;
+
+        layout = mLoadingAnimationStyle.createLoadingLayout(context, mode,
+                    getPullToRefreshScrollDirection(), attrs);
 		layout.setVisibility(View.INVISIBLE);
 		return layout;
 	}
@@ -627,7 +625,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		mLayoutVisibilityChangesEnabled = false;
 	}
 
-	protected final LoadingLayout getFooterLayout() {
+	protected final BaseLoadingLayout getFooterLayout() {
 		return mFooterLayout;
 	}
 
@@ -635,7 +633,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		return mFooterLayout.getContentSize();
 	}
 
-	protected final LoadingLayout getHeaderLayout() {
+	protected final BaseLoadingLayout getHeaderLayout() {
 		return mHeaderLayout;
 	}
 

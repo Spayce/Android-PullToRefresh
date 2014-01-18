@@ -4,8 +4,9 @@
     <FrameLayout
             android:id="@+id/fl_inner"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="120dp"
+            android:layout_gravity="bottom"
             android:background="@color/rocketship_bg">
-    </FrameLayout>
 
+    </FrameLayout>
 </merge>

@@ -6,11 +6,9 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -21,10 +19,11 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     private static final String TAG = "RocketshipLoadingLayout";
 
+    private final float IMAGES_ASPECT_RATIO = 0.321875f;
+
     protected final PullToRefreshBase.Mode mMode;
     protected final PullToRefreshBase.Orientation mScrollDirection;
 
-    private FrameLayout mInnerLayout;
     private View mRocket;
     private RocketshipAnimation animation;
     private Handler handler = new Handler();
@@ -37,48 +36,33 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
         setBackgroundResource(R.color.rocketship_bg);
         LayoutInflater.from(context).inflate(R.layout.pull_to_refresh_header_rocketship, this);
 
-        mInnerLayout = (FrameLayout) findViewById(R.id.fl_inner);
-    }
+        mRocket = findViewById(R.id.iv_rocket);
 
-    private void createRocket() {
-        mRocket = new View(getContext());
-        mRocket.setBackgroundResource(R.drawable.spayce_rocketship);
-        LayoutParams lp = new LayoutParams(dpToPx(35), dpToPx(35));
-        lp.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        LayoutParams lp = new LayoutParams(getScreenWidth(), (int) (getScreenWidth() * IMAGES_ASPECT_RATIO));
+        lp.gravity = Gravity.BOTTOM;
         mRocket.setLayoutParams(lp);
-        addView(mRocket);
-        animation = new RocketshipAnimation(mRocket, dpToPx(40));
+
+        animation = new RocketshipAnimation(mRocket);
     }
 
-    private void destoyRocket() {
-        if(mRocket != null) {
-            removeView(mRocket);
-            mRocket = null;
-        }
-        if(animation != null) {
-            animation.stopCirlceAnimation();
-            animation = null;
-        }
-    }
 
     @Override
     public int getContentSize() {
         switch (mScrollDirection) {
             case HORIZONTAL:
-                return mInnerLayout.getWidth();
+                return mRocket.getWidth();
             case VERTICAL:
             default:
-                return mInnerLayout.getHeight();
+                return mRocket.getHeight();
         }
     }
 
     @Override
     public void refreshing() {
-        createRocket();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                animation.startCircleAnimation();
+                animation.startAnimation();
             }
         }, 300);
     }
@@ -95,7 +79,7 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     @Override
     public void reset() {
-        destoyRocket();
+        animation.reset();
     }
 
     @Override
@@ -114,7 +98,7 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     @Override
     public void onPull(final float scale) {
-
+        animation.onPull(scale);
     }
 
     @Override
@@ -130,6 +114,17 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
     private int dpToPx(final float dp) {
         final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) ((dp * scale) + 0.5f);
+    }
+
+    private DisplayMetrics getDisplayMetrics() {
+        final WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        final DisplayMetrics metrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(metrics);
+        return metrics;
+    }
+
+    private int getScreenWidth() {
+        return getDisplayMetrics().widthPixels;
     }
 
     /* ************************

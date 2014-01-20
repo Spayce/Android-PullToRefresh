@@ -19,7 +19,7 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     private static final String TAG = "RocketshipLoadingLayout";
 
-    private final float IMAGES_ASPECT_RATIO = 0.321875f;
+    private final float IMAGES_ASPECT_RATIO = 0.359375f;
 
     protected final PullToRefreshBase.Mode mMode;
     protected final PullToRefreshBase.Orientation mScrollDirection;

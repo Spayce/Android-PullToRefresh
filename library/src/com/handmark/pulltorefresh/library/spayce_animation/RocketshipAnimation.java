@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import com.handmark.pulltorefresh.library.R;
 
@@ -41,13 +40,8 @@ public class RocketshipAnimation {
     }
 
     public void startAnimation() {
-        playAnimationDrawable(R.drawable.rocket_up);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                playAnimationDrawable(R.drawable.rocket_circle);
-            }
-        }, 560 /*Length of rocket_up animation*/);
+        reset();
+        playAnimationDrawable(R.drawable.rocket_anim);
     }
 
 

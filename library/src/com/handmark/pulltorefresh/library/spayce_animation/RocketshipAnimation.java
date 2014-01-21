@@ -40,7 +40,6 @@ public class RocketshipAnimation {
     }
 
     public void startAnimation() {
-        reset();
         playAnimationDrawable(R.drawable.rocket_anim);
     }
 

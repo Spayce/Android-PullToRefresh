@@ -59,12 +59,12 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     @Override
     public void refreshing() {
-        handler.postDelayed(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 animation.startAnimation();
             }
-        }, 300);
+        });
     }
 
     @Override

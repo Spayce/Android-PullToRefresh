@@ -48,6 +48,7 @@ public class RocketshipAnimation {
         handler.post(new Runnable() {
             @Override
             public void run() {
+                reset();
                 view.setBackgroundResource(resId);
                 ((AnimationDrawable) view.getBackground()).start();
             }

@@ -1,5 +1,6 @@
 package com.handmark.pulltorefresh.library.internal;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
@@ -21,15 +22,18 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     private final float IMAGES_ASPECT_RATIO = 0.359375f;
 
+    private Activity activity;
+
     protected final PullToRefreshBase.Mode mMode;
     protected final PullToRefreshBase.Orientation mScrollDirection;
 
     private View mRocket;
     private RocketshipAnimation animation;
-    private Handler handler = new Handler();
 
     public RocketshipLoadingLayout(final Context context, final PullToRefreshBase.Mode mode, final PullToRefreshBase.Orientation scrollDirection, TypedArray attrs) {
         super(context);
+        this.activity = (Activity) context;
+
         mMode = mode;
         mScrollDirection = scrollDirection;
 
@@ -42,7 +46,7 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
         lp.gravity = Gravity.BOTTOM;
         mRocket.setLayoutParams(lp);
 
-        animation = new RocketshipAnimation(mRocket);
+        animation = new RocketshipAnimation((Activity) context, mRocket);
     }
 
 
@@ -59,7 +63,7 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     @Override
     public void refreshing() {
-        handler.post(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 animation.startAnimation();

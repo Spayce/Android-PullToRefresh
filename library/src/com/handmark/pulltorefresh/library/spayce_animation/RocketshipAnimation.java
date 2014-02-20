@@ -1,9 +1,11 @@
 package com.handmark.pulltorefresh.library.spayce_animation;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import com.handmark.pulltorefresh.library.R;
 
@@ -11,15 +13,48 @@ import com.handmark.pulltorefresh.library.R;
 public class RocketshipAnimation {
     private static String TAG = "RocketshipAnimation";
 
+
+    private Activity context;
+
     private Drawable[] drawables = new Drawable[42];
 
     private final View view;
-    private Handler handler;
+    private SpayceAnimationDrawable startStage;
+    private SpayceAnimationDrawable cycleStage;
 
-    public RocketshipAnimation(final View v) {
+    public RocketshipAnimation(final Activity context, final View v) {
+        this.context = context;
         this.view = v;
-        this.handler = new Handler();
         initDrawables();
+
+        startStage = new SpayceAnimationDrawable();
+        for (int i = 0; i < drawables.length; ++i) {
+            startStage.addFrame(drawables[i], 40);
+        }
+        startStage.setAnimationFinishListener(new SpayceAnimationDrawable.IAnimationFinishListener() {
+            @Override
+            public void onAnimationFinished() {
+                context.runOnUiThread(new Runnable() {
+                    @SuppressWarnings("deprecation")
+                    @Override
+                    public void run() {
+                        try {
+                            view.setBackgroundDrawable(cycleStage);
+                            cycleStage.start();
+                        } catch (Exception e) {
+                            //no-op
+                        }
+                    }
+                });
+            }
+        });
+
+
+        cycleStage = new SpayceAnimationDrawable();
+        for (int i = 14; i < drawables.length; ++i) {
+            cycleStage.addFrame(drawables[i], 45);
+        }
+        cycleStage.setOneShot(false);
     }
 
     public void onPull(float scale) {
@@ -32,25 +67,21 @@ public class RocketshipAnimation {
 
     public void reset() {
         try {
-            ((AnimationDrawable) view.getBackground()).stop();
+            startStage.reset();
+            cycleStage.reset();
         } catch (Exception e) {
             //no-op
         }
-        view.setBackgroundResource(R.color.rocketship_bg);
     }
 
     public void startAnimation() {
-        playAnimationDrawable(R.drawable.rocket_anim);
-    }
-
-
-    private void playAnimationDrawable(final int resId) {
-        handler.post(new Runnable() {
+        context.runOnUiThread(new Runnable() {
+            @SuppressWarnings("deprecation")
             @Override
             public void run() {
                 reset();
-                view.setBackgroundResource(resId);
-                ((AnimationDrawable) view.getBackground()).start();
+                view.setBackgroundDrawable(startStage);
+                startStage.start();
             }
         });
     }
@@ -72,6 +103,8 @@ public class RocketshipAnimation {
         drawables[11] = res.getDrawable(R.drawable.pull_to_refresh_12);
         drawables[12] = res.getDrawable(R.drawable.pull_to_refresh_13);
         drawables[13] = res.getDrawable(R.drawable.pull_to_refresh_14);
+
+        //<cycle>
         drawables[14] = res.getDrawable(R.drawable.pull_to_refresh_15);
         drawables[15] = res.getDrawable(R.drawable.pull_to_refresh_16);
         drawables[16] = res.getDrawable(R.drawable.pull_to_refresh_17);
@@ -100,6 +133,7 @@ public class RocketshipAnimation {
         drawables[39] = res.getDrawable(R.drawable.pull_to_refresh_40);
         drawables[40] = res.getDrawable(R.drawable.pull_to_refresh_41);
         drawables[41] = res.getDrawable(R.drawable.pull_to_refresh_42);
+        //</cycle>
     }
 
 }

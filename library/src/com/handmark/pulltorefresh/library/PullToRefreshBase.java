@@ -21,6 +21,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -64,6 +65,8 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+    private Handler handler = new Handler();
 
 	private int mTouchSlop;
 	private float mLastMotionX, mLastMotionY;
@@ -297,9 +300,14 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
 	@Override
 	public final void onRefreshComplete() {
-		if (isRefreshing()) {
-			setState(State.RESET);
-		}
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isRefreshing()) {
+                    setState(State.RESET);
+                }
+            }
+        }, 1500);
 	}
 
 	@Override

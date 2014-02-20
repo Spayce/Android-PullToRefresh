@@ -13,8 +13,7 @@ import com.handmark.pulltorefresh.library.R;
 public class RocketshipAnimation {
     private static String TAG = "RocketshipAnimation";
 
-
-    private Activity context;
+    private Handler handler = new Handler();
 
     private Drawable[] drawables = new Drawable[42];
 
@@ -22,8 +21,8 @@ public class RocketshipAnimation {
     private SpayceAnimationDrawable startStage;
     private SpayceAnimationDrawable cycleStage;
 
-    public RocketshipAnimation(final Activity context, final View v) {
-        this.context = context;
+    public RocketshipAnimation(final View v) {
+
         this.view = v;
         initDrawables();
 
@@ -34,7 +33,7 @@ public class RocketshipAnimation {
         startStage.setAnimationFinishListener(new SpayceAnimationDrawable.IAnimationFinishListener() {
             @Override
             public void onAnimationFinished() {
-                context.runOnUiThread(new Runnable() {
+                handler.post(new Runnable() {
                     @SuppressWarnings("deprecation")
                     @Override
                     public void run() {
@@ -75,7 +74,7 @@ public class RocketshipAnimation {
     }
 
     public void startAnimation() {
-        context.runOnUiThread(new Runnable() {
+        handler.post(new Runnable() {
             @SuppressWarnings("deprecation")
             @Override
             public void run() {

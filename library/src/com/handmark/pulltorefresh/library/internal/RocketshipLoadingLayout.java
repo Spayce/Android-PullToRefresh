@@ -22,7 +22,7 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     private final float IMAGES_ASPECT_RATIO = 0.359375f;
 
-    private Activity activity;
+    private Handler handler = new Handler();
 
     protected final PullToRefreshBase.Mode mMode;
     protected final PullToRefreshBase.Orientation mScrollDirection;
@@ -32,7 +32,7 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     public RocketshipLoadingLayout(final Context context, final PullToRefreshBase.Mode mode, final PullToRefreshBase.Orientation scrollDirection, TypedArray attrs) {
         super(context);
-        this.activity = (Activity) context;
+
 
         mMode = mode;
         mScrollDirection = scrollDirection;
@@ -46,7 +46,7 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
         lp.gravity = Gravity.BOTTOM;
         mRocket.setLayoutParams(lp);
 
-        animation = new RocketshipAnimation((Activity) context, mRocket);
+        animation = new RocketshipAnimation(mRocket);
     }
 
 
@@ -63,7 +63,7 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     @Override
     public void refreshing() {
-        activity.runOnUiThread(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 animation.startAnimation();

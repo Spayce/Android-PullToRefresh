@@ -107,12 +107,16 @@ public class RocketshipLoadingLayout extends BaseLoadingLayout {
 
     @Override
     public void hideAllViews() {
-
+        if(mRocket.getVisibility() == VISIBLE) {
+            mRocket.setVisibility(INVISIBLE);
+        }
     }
 
     @Override
     public void showInvisibleViews() {
-
+        if(mRocket.getVisibility() == INVISIBLE) {
+            mRocket.setVisibility(VISIBLE);
+        }
     }
 
     private int dpToPx(final float dp) {

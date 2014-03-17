@@ -372,11 +372,21 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 
 	private boolean isFirstItemVisible() {
 		final Adapter adapter = mRefreshableView.getAdapter();
-
 		if (null == adapter || adapter.isEmpty()) {
+		    Log.d(LOG_TAG, "null or empty adapter") ;
 			if (DEBUG) {
 				Log.d(LOG_TAG, "isFirstItemVisible. Empty View.");
 			}
+			
+			/**
+			 * Always returning 'true' if there is no adapter ignores the possibility
+			 * of a header view.
+			 */
+			if ( mRefreshableView.getChildCount() > 0 ) {
+			    final View firstVisibleChild = mRefreshableView.getChildAt(0);
+			    return firstVisibleChild.getTop() >= mRefreshableView.getTop();
+			}
+			
 			return true;
 
 		} else {
@@ -391,7 +401,7 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 			if (mRefreshableView.getFirstVisiblePosition() <= 1) {
 				final View firstVisibleChild = mRefreshableView.getChildAt(0);
 				if (firstVisibleChild != null) {
-					return firstVisibleChild.getTop() >= mRefreshableView.getTop();
+				    return firstVisibleChild.getTop() >= mRefreshableView.getTop();
 				}
 			}
 		}

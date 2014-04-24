@@ -98,6 +98,8 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
 	private SmoothScrollRunnable mCurrentSmoothScrollRunnable;
 
+    private Runnable mActionOnPull;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -571,7 +573,11 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		}
 	}
 
-	/**
+    public void setActionOnPull(Runnable mActionOnPull) {
+        this.mActionOnPull = mActionOnPull;
+    }
+
+    /**
 	 * Used internally for adding view. Need because we override addView to
 	 * pass-through to the Refreshable View
 	 */
@@ -1199,6 +1205,13 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
 		if (newScrollValue != 0 && !isRefreshing()) {
 			float scale = Math.abs(newScrollValue) / (float) itemDimension;
+
+            if(mActionOnPull != null && itemDimension < Math.abs(newScrollValue)) {
+                mActionOnPull.run();
+                setState(State.RESET);
+                return;
+            }
+
 			switch (mCurrentMode) {
 				case PULL_FROM_END:
 					mFooterLayout.onPull(scale);

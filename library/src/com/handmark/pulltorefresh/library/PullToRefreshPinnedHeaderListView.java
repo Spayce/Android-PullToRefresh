@@ -6,22 +6,18 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshAdapterViewBase;
 import com.handmark.pulltorefresh.library.internal.BaseLoadingLayout;
 import com.handmark.pulltorefresh.library.internal.EmptyViewMethodAccessor;
-import com.handmark.pulltorefresh.library.pinned_header_list_view.PinnedHeaderListView;
+import com.handmark.pulltorefresh.library.pinned_header_list_view.InternalPinnedHeaderListView;
 
-public class PullToRefreshPinnedHeaderListView extends PullToRefreshAdapterViewBase<PinnedHeaderListView> {
+public class PullToRefreshPinnedHeaderListView extends PullToRefreshAdapterViewBase<InternalPinnedHeaderListView> {
 
     private BaseLoadingLayout mHeaderLoadingView;
     private BaseLoadingLayout mFooterLoadingView;
@@ -191,8 +187,8 @@ public class PullToRefreshPinnedHeaderListView extends PullToRefreshAdapterViewB
         return proxy;
     }
 
-    protected PinnedHeaderListView createListView(Context context, AttributeSet attrs) {
-        final PinnedHeaderListView lv;
+    protected InternalPinnedHeaderListView createListView(Context context, AttributeSet attrs) {
+        final InternalPinnedHeaderListView lv;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             lv = new InternalListViewSDK9(context, attrs);
         } else {
@@ -202,8 +198,8 @@ public class PullToRefreshPinnedHeaderListView extends PullToRefreshAdapterViewB
     }
 
     @Override
-    protected PinnedHeaderListView createRefreshableView(Context context, AttributeSet attrs) {
-        PinnedHeaderListView lv = createListView(context, attrs);
+    protected InternalPinnedHeaderListView createRefreshableView(Context context, AttributeSet attrs) {
+        InternalPinnedHeaderListView lv = createListView(context, attrs);
 
         // Set it to this so it can be used in ListActivity/ListFragment
         lv.setId(android.R.id.list);
@@ -263,7 +259,7 @@ public class PullToRefreshPinnedHeaderListView extends PullToRefreshAdapterViewB
         }
     }
 
-    protected class InternalListView extends PinnedHeaderListView implements EmptyViewMethodAccessor {
+    protected class InternalListView extends InternalPinnedHeaderListView implements EmptyViewMethodAccessor {
 
         private boolean mAddedLvFooter = false;
 

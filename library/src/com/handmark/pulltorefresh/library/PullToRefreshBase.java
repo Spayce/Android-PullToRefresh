@@ -1307,7 +1307,9 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         /**
          * Spayce-specific
          */
-        ROCKETSHIP;
+        ROCKETSHIP,
+
+        TRANSPARENT;
 
 		static AnimationStyle getDefault() {
 			return ROCKETSHIP;
@@ -1327,6 +1329,8 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
                     return ROTATE;
 				case 0x1:
                     return FLIP;
+                case 0x2:
+                    return TRANSPARENT;
                 case 0x3:
                 default:
                     return ROCKETSHIP;
@@ -1339,6 +1343,8 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 					return new RotateLoadingLayout(context, mode, scrollDirection, attrs);
                 case FLIP:
                     return new FlipLoadingLayout(context, mode, scrollDirection, attrs);
+                case TRANSPARENT:
+                    return new TransparentLoadingLayout(context, mode, scrollDirection, attrs);
                 case ROCKETSHIP:
                 default:
                     return new RocketshipLoadingLayout(context, mode, scrollDirection, attrs);

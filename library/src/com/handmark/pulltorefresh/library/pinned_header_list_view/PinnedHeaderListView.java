@@ -98,7 +98,9 @@ public class PinnedHeaderListView extends ListView implements OnScrollListener {
                 if (pinnedHeaderHeight >= headerTop && headerTop > 0) {
                     mHeaderOffset = headerTop - header.getHeight();
                 } else if (headerTop <= 0) {
-                    header.setVisibility(INVISIBLE);
+                    //FIXME should be header.setVisibility(INVISIBLE);
+                    //this is a hacky fix
+                    header.setVisibility(VISIBLE);
                 }
             }
         }
